@@ -1,0 +1,11 @@
+.vscode
+ollama
+app
+dist
+llm/llama.cpp
+.env
+.cache
+test_data
+.github
+.venv
+
