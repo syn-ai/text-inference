@@ -1,11 +1,11 @@
 
 services:
-  mistral:
+  text:
     build: .
     image: ollama/ollama
     working_dir: /app
     ports:
-      - "11431:11434"
+      - "7099:11434"
     volumes:
       - .:/app
       - /root/.ollama:/root/.ollama
@@ -19,13 +19,34 @@ services:
           devices:
             - capabilities: [gpu]
               driver: nvidia
-              count: 0
+              count: 1
+
+  mistral:
+    build: .
+    image: ollama/ollama
+    working_dir: /app
+    ports:
+      - "11430:11434"
+    volumes:
+      - .:/app
+      - /root/.ollama:/root/.ollama
+      - ~/.cache:/root/.cache
+    environment:
+      - GITHUB_TOKEN:$GITHUB_TOKEN
+      - CUDA_VISIBLE_DEVICES=1
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
+              driver: nvidia
+              count: 2
   mixtral:
     build: .
     image: ollama/ollama
     working_dir: /app
     ports:
-      - "11432:11434"
+      - "11431:11434"
     volumes:
       - .:/app
       - /root/.ollama:/root/.ollama
@@ -39,14 +60,14 @@ services:
           devices:
             - capabilities: [gpu]
               driver: nvidia
-              count: 1
+              count: 3
 
   code:
     build: .
     image: ollama/ollama
     working_dir: /app
     ports:
-      - "11433:11434"
+      - "11432:11434"
     volumes:
       - .:/app
       - /root/.ollama:/root/.ollama
@@ -60,20 +81,21 @@ services:
           devices:
             - capabilities: [gpu]
               driver: nvidia
-              count: 2
+              count: 4
 
   bakllava:
     build: .
     image: ollama/ollama
     working_dir: /app
     ports:
-      - "11430:11434"
+      - "11433:11434"
     volumes:
       - .:/app
       - /root/.ollama:/root/.ollama
       - ~/.cache:/root/.cache
     environment:
       - GITHUB_TOKEN:$GITHUB_TOKEN
+      - CUDA_VISIBLE_DEVICES=4
 
     deploy:
       resources:
@@ -81,4 +103,4 @@ services:
           devices:
             - capabilities: [gpu]
               driver: nvidia
-              count: 3
+              count: 5
